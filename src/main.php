@@ -105,7 +105,15 @@ class main{
 			return;
 		}
 		$ping = microtime(true) - $time;
-		echo "Success in ".(bcmul(sprintf("%.5f", $ping), "1000", 0))."ms, player: ".$this->provider->getNumPlayers()."/".$this->provider->getMaxPlayers()."\n";
+		$ms_time = null;
+		$ms_time = (int) ($ping * 1000);
+//		if(function_exists("bcmul")){
+//			$ms_time = (bcmul(sprintf("%.5f", $ping), "1000", 0));
+//		}else{
+//			$ms_time = (int) ($ping * 1000);
+//		}
+		echo "Success in ", $ms_time, "ms, player: ", $this->provider->getNumPlayers(), "/", $this->provider->getMaxPlayers(), "\n";
+
 	}
 
 	public function updateMessage() : void{
@@ -113,7 +121,9 @@ class main{
 		$embed = $this->getEmbed();
 		$builder = MessageBuilder::new()->setEmbeds([$embed]);
 		var_dump("update edit");
-		$this->targetmessage->edit($builder)->then(null, function() : void{
+		$this->targetmessage->edit($builder)->then(function(){
+
+		}, function() : void{
 			$this->discord->close();
 			throw new \RuntimeException("edit is rejected.(errno 3)");
 		});

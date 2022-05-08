@@ -18,7 +18,6 @@ class MinecraftQueryProvider implements QueryProvider{
 	protected MinecraftQuery $query;
 	/** @var list<mixed> */
 	protected array $info = [];
-	protected bool $hasConnected = false;
 	private int $pingFalledCount = 0;
 	private int $lastConnectTime;
 
@@ -27,24 +26,20 @@ class MinecraftQueryProvider implements QueryProvider{
 		$this->port = $port;
 	}
 
-
 	public function Connect() : bool{
 		$this->query = new MinecraftQuery();
 		try{
 			$this->query->Connect($this->address, $this->port);
 			$this->pingFalledCount = 0;
-			$this->hasConnected = true;
 			$this->updateLastConnectTime();
 		}catch(MinecraftQueryException $exception){
 			++$this->pingFalledCount;
-			$this->hasConnected = false;
 			return false;
 		}
 		$info = $this->query->GetInfo();
 		if(is_array($info)){//$info !== false
 			$this->info = $info;
 		}
-
 		return true;
 	}
 
@@ -73,7 +68,7 @@ class MinecraftQueryProvider implements QueryProvider{
 	}
 
 	public function isHasConnected() : bool{
-		return $this->hasConnected;
+		return isset($this->hasConnected);
 	}
 
 	public function getPingFalledCount() : int{
