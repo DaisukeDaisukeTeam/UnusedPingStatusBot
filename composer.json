@@ -2,6 +2,15 @@
     "require": {
         "php": "^7.4|8.*",
         "xpaw/php-minecraft-query": "^4.0",
-        "team-reflex/discord-php": "^7.0"
+        "team-reflex/discord-php": "^7.0",
+        "ext-yaml": "*",
+        "ext-bcmath": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "UnusedPingStatusBot\\": [
+                "src\\"
+            ]
+        }
     }
 }
